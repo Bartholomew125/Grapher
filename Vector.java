@@ -59,12 +59,20 @@ public class Vector {
     }
 
     /**
-     * scales the vector to be length 1.
+     * Scales the vector to be length 1.
      */
     public void normalize() {
         double length = this.getLength();
         this.setX( this.getX()/length );
         this.setY( this.getY()/length );
+    }
+
+    /**
+     * Scales the vector by the factor k.
+     */
+    public void scale(double k) {
+        this.setX( this.getX()*k );
+        this.setY( this.getY()*k );
     }
 
 }
