@@ -36,4 +36,13 @@ public class Vector {
         return Math.sqrt(a+b);
     }
 
+    /**
+     * Returns a new vector which is this vector minus the given vector v.
+     */
+    public Vector subtract(Vector v) {
+        double x = this.getX() - v.getX();
+        double y = this.getY() - v.getY();
+        return new Vector(x, y);
+    }
+
 }
