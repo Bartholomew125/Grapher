@@ -19,6 +19,19 @@ public class Vector {
         return this.x;
     }
 
+    /**
+     * Sets a new x value for this vector.
+     */
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    /**
+     * Sets a new y value for this vector.
+     */
+    public void setY(double y) {
+        this.y = y;
+    }
 
     /**
      * Returns the y component of this vector.
@@ -43,6 +56,15 @@ public class Vector {
         double x = this.getX() - v.getX();
         double y = this.getY() - v.getY();
         return new Vector(x, y);
+    }
+
+    /**
+     * scales the vector to be length 1.
+     */
+    public void normalize() {
+        double length = this.getLength();
+        this.setX( this.getX()/length );
+        this.setY( this.getY()/length );
     }
 
 }
