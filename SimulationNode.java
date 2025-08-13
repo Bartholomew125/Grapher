@@ -102,4 +102,18 @@ public class SimulationNode {
     public void addParent(SimulationNode simNode) {
         this.children.add(simNode);
     }
+
+    /**
+     * Return the SimulatioNode children of this SimulationNode.
+     */
+    public List<SimulationNode> getChildren() {
+        return this.children;
+    }
+
+    /**
+     * Return the SimulatioNode parents of this SimulationNode.
+     */
+    public List<SimulationNode> getParents() {
+        return this.parents;
+    }
 }
