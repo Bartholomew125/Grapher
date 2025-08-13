@@ -22,8 +22,8 @@ public class Grapher extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        for (int i = 0; i < this.graphSimulator.getNodes().length; i++) {
-            SimulationNode node = this.graphSimulator.getNodes()[i];
+        for (int i = 0; i < this.graphSimulator.getSimNodes().length; i++) {
+            SimulationNode node = this.graphSimulator.getSimNodes()[i];
             int x = (int) (node.getX() * this.width);
             int y = (int) (node.getY() * this.height);
 
