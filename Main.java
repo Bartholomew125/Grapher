@@ -10,16 +10,6 @@ import javax.swing.JFrame;
  */
 public class Main {
 
-    private class NodeContentTest implements NodeContent {
-        private NodeContentTest() {
-        }
-        @Override
-        public String getContent() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-    }
-
     public static void main(String[] args) {
         int width = 1000;
         int height = 1000;
