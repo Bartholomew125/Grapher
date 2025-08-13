@@ -96,7 +96,7 @@ public class SimulationNode {
      * Add a SimulationNode as a parent to this SimulationNode.
      */
     public void addParent(SimulationNode simNode) {
-        this.children.add(simNode);
+        this.parents.add(simNode);
     }
 
     /**
