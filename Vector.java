@@ -75,4 +75,16 @@ public class Vector {
         this.setY( this.getY()*k );
     }
 
+    /**
+     * Rotate this vector the given amount of radians counterclockwise
+     */
+    public void rotate(double radians) {
+        // Convert to polar
+        double length = this.getLength();
+        double angle = Math.atan2(this.getY(), this.getX());
+        angle = angle + radians;
+        // Convert to cartesian
+        this.setX(Math.cos(angle) * length);
+        this.setY(Math.sin(angle) * length);
+    }
 }
