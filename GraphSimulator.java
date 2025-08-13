@@ -1,3 +1,5 @@
+import java.util.List;
+
 /**
  * The class GraphSimulator is used to simulate how all the SimulationNodes are
  * suppose to move and interact.
@@ -7,6 +9,7 @@ public class GraphSimulator {
     private SimulationNode[] simNodes;
 
     public GraphSimulator(Network network) {
+        // First create a SimulationNode for each Node.
         this.simNodes = new SimulationNode[network.size()];
         for (int i = 0; i < this.simNodes.length; i++) {
             Node node = network.getNodes().get(i);
@@ -16,6 +19,32 @@ public class GraphSimulator {
             float g = 0.0f;
             float b = 0.0f;
             this.simNodes[i] = new SimulationNode(node,x,y,r,g,b);
+        }
+
+        // Map the parents and children of the Nodes in the SimulationNodes, to
+        // the parents and children of the SimulationNodes.
+        for (SimulationNode simNode : this.simNodes) {
+            Node node = simNode.getNode();
+
+            // Chech the children
+            List<Node> children = node.getChildren();
+            for (Node child : children) {
+                for (SimulationNode otherSimNode : this.simNodes) {
+                    if (otherSimNode.getNode().equals(child)) {
+                        simNode.addChild(otherSimNode);
+                    }
+                }
+            }
+
+            // Check the parents
+            List<Node> parents = node.getParents();
+            for (Node parent : parents) {
+                for (SimulationNode otherSimNode : this.simNodes) {
+                    if (otherSimNode.getNode().equals(parent)) {
+                        simNode.addParent(otherSimNode);
+                    }
+                }
+            }
         }
     }
 
