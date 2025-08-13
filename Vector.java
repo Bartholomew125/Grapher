@@ -53,8 +53,8 @@ public class Vector {
      * Subtracts v1 from v2, and return it as a new vector.
      */
     public static Vector subtract(Vector v1, Vector v2) {
-        double x = this.getX() - v.getX();
-        double y = this.getY() - v.getY();
+        double x = v2.getX() - v1.getX();
+        double y = v2.getY() - v1.getY();
         return new Vector(x, y);
     }
 
