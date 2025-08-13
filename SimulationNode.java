@@ -88,4 +88,18 @@ public class SimulationNode {
         this.dx = this.dx + force.getX();
         this.dy = this.dy + force.getY();
     }
+
+    /**
+     * Add a SimulationNode as a child to this SimulationNode.
+     */
+    public void addChild(SimulationNode simNode) {
+        this.children.add(simNode);
+    }
+
+    /**
+     * Add a SimulationNode as a parent to this SimulationNode.
+     */
+    public void addParent(SimulationNode simNode) {
+        this.children.add(simNode);
+    }
 }
