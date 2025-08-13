@@ -44,4 +44,10 @@ public class Node {
         return this.children;
     }
 
+    /**
+     * Return the parents of this Node.
+     */
+    public List<Node> getParents() {
+        return this.parents;
+    }
 }
