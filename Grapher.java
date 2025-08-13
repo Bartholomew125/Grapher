@@ -31,6 +31,14 @@ public class Grapher extends JPanel {
             g.fillOval(x, y, 20, 20);
 
 
+            for (SimulationNode simChild : simNode.getChildren()) {
+                int xChild = (int) (simChild.getX() * this.width);
+                int yChild = (int) (simChild.getY() * this.height);
+
+                g.setColor(Color.RED);
+                g.drawLine(x, y, xChild, yChild);
+            }
+
         }
 
     }
