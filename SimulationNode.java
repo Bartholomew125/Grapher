@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +22,8 @@ public class SimulationNode {
 
     public SimulationNode(Node node, double x, double y, float red, float green, float blue) {
         this.node = node;
+        this.parents = new ArrayList<>();
+        this.children = new ArrayList<>();
         this.x = x;
         this.y = y;
         this.dx = 0;
@@ -90,13 +93,6 @@ public class SimulationNode {
     }
 
     /**
-     * Add a SimulationNode as a child to this SimulationNode.
-     */
-    public void addChild(SimulationNode simNode) {
-        this.children.add(simNode);
-    }
-
-    /**
      * Add a SimulationNode as a parent to this SimulationNode.
      */
     public void addParent(SimulationNode simNode) {
@@ -104,10 +100,10 @@ public class SimulationNode {
     }
 
     /**
-     * Return the SimulatioNode children of this SimulationNode.
+     * Add a SimulationNode as a child to this SimulationNode.
      */
-    public List<SimulationNode> getChildren() {
-        return this.children;
+    public void addChild(SimulationNode simNode) {
+        this.children.add(simNode);
     }
 
     /**
@@ -115,5 +111,12 @@ public class SimulationNode {
      */
     public List<SimulationNode> getParents() {
         return this.parents;
+    }
+
+    /**
+     * Return the SimulatioNode children of this SimulationNode.
+     */
+    public List<SimulationNode> getChildren() {
+        return this.children;
     }
 }
