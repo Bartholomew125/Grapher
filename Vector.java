@@ -59,6 +59,15 @@ public class Vector {
     }
 
     /**
+     * Add together v1 and v2 and return it as a new Vector.
+     */
+    public static Vector add(Vector v1, Vector v2) {
+        double x = v1.getX() + v2.getX();
+        double y = v1.getY() + v2.getY();
+        return new Vector(x, y);
+    }
+
+    /**
      * Scales the vector to be length 1.
      */
     public void normalize() {
