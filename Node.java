@@ -45,4 +45,11 @@ public class Node<T> {
         this.parents.add(node);
     }
 
+    /**
+     * Return the children of this Node.
+     */
+    public List<Node<T>> getChildren() {
+        return this.children;
+    }
+
 }
