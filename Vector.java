@@ -104,4 +104,11 @@ public class Vector {
         this.setX(Math.cos(angle) * length);
         this.setY(Math.sin(angle) * length);
     }
+
+    /**
+     * Creates a new copy of this vector.
+     */
+    public Vector copy() {
+        return new Vector(this.getX(), this.getY());
+    }
 }
