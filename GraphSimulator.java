@@ -4,18 +4,18 @@
  */
 public class GraphSimulator {
 
-    private SimulationNode[] nodes;
+    private SimulationNode[] simNodes;
 
     public GraphSimulator(Network<?> network) {
-        this.nodes = new SimulationNode[network.size()];
-        for (int i = 0; i < this.nodes.length; i++) {
+        this.simNodes = new SimulationNode[network.size()];
+        for (int i = 0; i < this.simNodes.length; i++) {
             Node<?> node = network.getNodes().get(i);
             double x = Math.random();
             double y = Math.random();
             float r = 0.0f;
             float g = 0.0f;
             float b = 0.0f;
-            this.nodes[i] = new SimulationNode(node,x,y,r,g,b);
+            this.simNodes[i] = new SimulationNode(node,x,y,r,g,b);
         }
     }
 
@@ -25,11 +25,11 @@ public class GraphSimulator {
      */
     public void update() {
         // Go through each pair of nodes only once.
-        for (int i = 0; i < this.nodes.length-1; i++) {
-            for (int j = i+1; j < this.nodes.length; j++) {
+        for (int i = 0; i < this.simNodes.length-1; i++) {
+            for (int j = i+1; j < this.simNodes.length; j++) {
 
-                SimulationNode node1 = this.nodes[i];
-                SimulationNode node2 = this.nodes[j];
+                SimulationNode node1 = this.simNodes[i];
+                SimulationNode node2 = this.simNodes[j];
 
                 if (node1 != node2) {
                     // Node positions
@@ -72,7 +72,7 @@ public class GraphSimulator {
         }
 
         // Update Positions at once.
-        for (SimulationNode node : this.nodes) {
+        for (SimulationNode node : this.simNodes) {
             node.updatePosition();
         }
     }
@@ -81,14 +81,14 @@ public class GraphSimulator {
      * Return the number of nodes in this simulation.
      */
     public int nodeCount() {
-        return this.nodes.length;
+        return this.simNodes.length;
     }
 
     /**
      * Return the nodes of this simulation.
      */
-    public SimulationNode[] getNodes() {
-        return this.nodes;
+    public SimulationNode[] getSimNodes() {
+        return this.simNodes;
     }
 
 }
