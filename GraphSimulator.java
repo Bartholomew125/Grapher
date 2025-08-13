@@ -12,9 +12,9 @@ public class GraphSimulator {
             Node<?> node = network.getNodes().get(i);
             double x = Math.random();
             double y = Math.random();
-            float r = (float) Math.random();
-            float g = (float) Math.random();
-            float b = (float) Math.random();
+            float r = 0.0f;
+            float g = 0.0f;
+            float b = 0.0f;
             this.nodes[i] = new SimulationNode(node,x,y,r,g,b);
         }
     }
