@@ -66,7 +66,7 @@ public class GraphSimulator {
                     Vector p2 = new Vector(node2.getX(), node2.getY());
 
                     // Vector from node1 to node 2
-                    Vector dir = p2.subtract(p1);
+                    Vector dir = Vector.subtract(p1, p2);
                     
                     // Calculate force. Repel when close and attract when far.
                     double force = 0.000001 * 1/dir.getLength();
