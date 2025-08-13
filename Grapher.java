@@ -23,12 +23,14 @@ public class Grapher extends JPanel {
         super.paintComponent(g);
 
         for (int i = 0; i < this.graphSimulator.getSimNodes().length; i++) {
-            SimulationNode node = this.graphSimulator.getSimNodes()[i];
-            int x = (int) (node.getX() * this.width);
-            int y = (int) (node.getY() * this.height);
+            SimulationNode simNode = this.graphSimulator.getSimNodes()[i];
+            int x = (int) (simNode.getX() * this.width);
+            int y = (int) (simNode.getY() * this.height);
 
-            g.setColor(new Color(node.getColorRed(), node.getColorGreen(), node.getColorBlue())); 
+            g.setColor(new Color(simNode.getColorRed(), simNode.getColorGreen(), simNode.getColorBlue())); 
             g.fillOval(x, y, 20, 20);
+
+
         }
 
     }
