@@ -59,6 +59,14 @@ public class Vector {
     }
 
     /**
+     * Adds the vector v to the this vector.
+     */
+    public void add(Vector v) {
+        this.setX(this.getX() + v.getX());
+        this.setY(this.getY() + v.getY());
+    }
+
+    /**
      * Add together v1 and v2 and return it as a new Vector.
      */
     public static Vector add(Vector v1, Vector v2) {
