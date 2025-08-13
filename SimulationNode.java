@@ -1,3 +1,5 @@
+import java.util.List;
+
 /**
  * The class SimulationNode is a shell to put around a node, so it can be used
  * in a simulation, by giving it a position, velocity and color. This class
@@ -7,6 +9,8 @@
 public class SimulationNode {
 
     private final Node<?> node;
+    private List<SimulationNode> parents;
+    private List<SimulationNode> children;
     private double x;
     private double y;
     private double dx;
@@ -40,7 +44,6 @@ public class SimulationNode {
     public double getX() {
         return this.x;
     }
-
 
     /**
      * Get the vertical position of the SimulationNode.
