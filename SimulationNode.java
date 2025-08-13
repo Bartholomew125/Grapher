@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class SimulationNode {
 
-    private final Node<?> node;
+    private final Node node;
     private List<SimulationNode> parents;
     private List<SimulationNode> children;
     private double x;
@@ -19,7 +19,7 @@ public class SimulationNode {
     private float green;
     private float blue;
 
-    public SimulationNode(Node<?> node, double x, double y, float red, float green, float blue) {
+    public SimulationNode(Node node, double x, double y, float red, float green, float blue) {
         this.node = node;
         this.x = x;
         this.y = y;
@@ -55,7 +55,7 @@ public class SimulationNode {
     /**
      * Return the node associated with this SimulationNode.
      */
-    public Node<?> getNode() {
+    public Node getNode() {
         return this.node;
     }
 

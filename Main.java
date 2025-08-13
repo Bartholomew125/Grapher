@@ -10,6 +10,16 @@ import javax.swing.JFrame;
  */
 public class Main {
 
+    private class NodeContentTest implements NodeContent {
+        private NodeContentTest() {
+        }
+        @Override
+        public String getContent() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+    }
+
     public static void main(String[] args) {
         int width = 1000;
         int height = 1000;
@@ -17,9 +27,9 @@ public class Main {
         int screenWidth = gd.getDisplayMode().getWidth();
         int screenHeight = gd.getDisplayMode().getHeight();
 
-        Network<Integer> network = new Network<>();
+        Network network = new Network();
         for (int i = 0; i < 2; i++) {
-            network.addNode(new Node<Integer>("", 0));
+            network.addNode(new Node(new NodeContentTest()));
         }
 
         GraphSimulator graphsim = new GraphSimulator(network);

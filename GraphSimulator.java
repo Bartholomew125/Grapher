@@ -6,10 +6,10 @@ public class GraphSimulator {
 
     private SimulationNode[] simNodes;
 
-    public GraphSimulator(Network<?> network) {
+    public GraphSimulator(Network network) {
         this.simNodes = new SimulationNode[network.size()];
         for (int i = 0; i < this.simNodes.length; i++) {
-            Node<?> node = network.getNodes().get(i);
+            Node node = network.getNodes().get(i);
             double x = Math.random();
             double y = Math.random();
             float r = 0.0f;

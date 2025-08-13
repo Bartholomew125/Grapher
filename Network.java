@@ -5,9 +5,9 @@ import java.util.ArrayList;
  * The class Network is used to represent a collection of nodes, and has methods
  * to add new nodes.
  */
-public class Network<T> {
+public class Network {
 
-    private List<Node<T>> nodes;
+    private List<Node> nodes;
 
     /**
      * Initialize a new empty network.
@@ -19,15 +19,15 @@ public class Network<T> {
     /**
      * Add a single node to the network.
      */
-    public void addNode(Node<T> node) {
+    public void addNode(Node node) {
         this.nodes.add(node);
     }
 
     /**
      * Add an array of nodes to the network.
      */
-    public void addAllNodes(Node<T>[] nodes) {
-        for (Node<T> node : nodes) {
+    public void addAllNodes(Node[] nodes) {
+        for (Node node : nodes) {
             this.addNode(node);
         }
     }
@@ -42,7 +42,7 @@ public class Network<T> {
     /**
      * Get a pointer to the list of nodes in the network.
     */
-    public List<Node<T>> getNodes() {
+    public List<Node> getNodes() {
         return this.nodes;
     }
 }
