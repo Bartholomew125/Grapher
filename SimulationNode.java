@@ -50,6 +50,13 @@ public class SimulationNode {
     }
 
     /**
+     * Return the node associated with this SimulationNode.
+     */
+    public Node<?> getNode() {
+        return this.node;
+    }
+
+    /**
      * Get the red color value of the SimulationNode.
      */
     public float getColorRed() {
