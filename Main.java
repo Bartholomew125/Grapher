@@ -4,7 +4,6 @@ import java.awt.GraphicsEnvironment;
 
 import javax.swing.JFrame;
 
-
 /**
  * Main
  */
@@ -17,20 +16,8 @@ public class Main {
         int screenWidth = gd.getDisplayMode().getWidth();
         int screenHeight = gd.getDisplayMode().getHeight();
 
-        Network network = new Network();
-        for (int i = 0; i < 2; i++) {
-            network.addNode(new Node(new NodeContentTest()));
-        }
-        for (int i = 0; i < network.size()-1; i++) {
-            for (int j = i+1; j < network.size(); j++) {
-                Node node1 = network.getNodes().get(i);
-                Node node2 = network.getNodes().get(j);
-
-                node1.addParent(node2);
-                node2.addChild(node1);
-            }
-        }
-
+        Network network = new TestNetwork(20);
+        System.out.println(network.size());
         GraphSimulator graphsim = new GraphSimulator(network);
         Grapher graph = new Grapher(graphsim, width, height);
 
