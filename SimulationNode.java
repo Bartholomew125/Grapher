@@ -147,4 +147,28 @@ public class SimulationNode {
     public List<SimulationNode> getChildren() {
         return this.children;
     }
+
+    /**
+     * Check whether simNode is a parent of this SimulationNode.
+     */
+    public boolean hasParent(SimulationNode simNode) {
+        for (SimulationNode parent : this.getParents()) {
+            if (parent.equals(simNode)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check whether simNode is a child of this SimulatioNode.
+     */
+    public boolean hasChild(SimulationNode simNode) {
+        for (SimulationNode parent : this.getParents()) {
+            if (parent.equals(simNode)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
