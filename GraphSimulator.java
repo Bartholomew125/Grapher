@@ -53,6 +53,8 @@ public class GraphSimulator {
      * suppose to move.
      */
     public void update() {
+        
+
         // Go through each pair of nodes only once.
         for (int i = 0; i < this.simNodes.length-1; i++) {
             for (int j = i+1; j < this.simNodes.length; j++) {
@@ -60,48 +62,30 @@ public class GraphSimulator {
                 SimulationNode node1 = this.simNodes[i];
                 SimulationNode node2 = this.simNodes[j];
 
-                if (node1 != node2) {
-                    // Node positions
-                    Vector p1 = new Vector(node1.getX(), node1.getY());
-                    Vector p2 = new Vector(node2.getX(), node2.getY());
+                // Node positions
+                Vector p1 = new Vector(node1.getX(), node1.getY());
+                Vector p2 = new Vector(node2.getX(), node2.getY());
 
-                    // Vector from node1 to node 2
-                    Vector dir = Vector.subtract(p1, p2);
-                    
-                    // Calculate force. Repel when close and attract when far.
-                    double force = 0.000001 * 1/dir.getLength();
+                // Vector from node1 to node 2
+                Vector dir = Vector.subtract(p1, p2);
 
-
-                    if (dir.getLength() < 0.3) {
-                        // Normalize the direction vector and scale by force
-                        dir.normalize();
-                        dir.scale(force);
-
-                        // Apply to node 2
-                        node2.applyForce(dir);
-
-                        // Reverse and apply to node1
-                        dir.scale(-1);
-                        node1.applyForce(dir);
-                    }
-                    else {
-                        // Normalize the direction vector and scale by force
-                        dir.normalize();
-                        dir.scale(force);
-
-                        // Apply to node1
-                        node1.applyForce(dir);
-
-                        // Reverse and apply to node2
-                        dir.scale(-1);
-                        node2.applyForce(dir);
-                    }
-                }
             }
         }
 
-        // Add friction and update position.
+        // Center of simulation.
+        Vector center = new Vector(0.5, 0.5);
+
+        // Go through each node once.
         for (SimulationNode node : this.simNodes) {
+            Vector nodePosition = new Vector(node.getX(), node.getY());
+
+            // Force towards center.
+            Vector centerForce = Vector.subtract(nodePosition, center);
+            centerForce.normalize();
+            centerForce.scale(0.001);
+            node.applyForce(centerForce);
+
+            // Add friction and update position.
             node.setDx(node.getDx()*0.99);
             node.setDy(node.getDy()*0.99);
             node.updatePosition();
