@@ -56,6 +56,34 @@ public class SimulationNode {
     }
 
     /**
+     * Get the horizontal velocity of the SimulationNode.
+     */
+    public double getDx() {
+        return this.dx;
+    }
+
+    /**
+     * Get the vertical velocity of the SimulationNode.
+     */
+    public double getDy() {
+        return this.dy;
+    }
+
+    /**
+     * Set the horizontal velocity of the SimulationNode.
+     */
+    public void setDx(double dx) {
+        this.dx = dx;
+    }
+
+    /**
+     * Set the vertical velocity of the SimulationNode.
+     */
+    public void setDy(double dy) {
+        this.dy = dy;
+    }
+
+    /**
      * Return the node associated with this SimulationNode.
      */
     public Node getNode() {
