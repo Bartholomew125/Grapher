@@ -100,8 +100,10 @@ public class GraphSimulator {
             }
         }
 
-        // Update Positions at once.
+        // Add friction and update position.
         for (SimulationNode node : this.simNodes) {
+            node.setDx(node.getDx()*0.99);
+            node.setDy(node.getDy()*0.99);
             node.updatePosition();
         }
     }
