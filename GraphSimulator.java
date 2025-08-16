@@ -1,4 +1,6 @@
+import java.security.DigestOutputStream;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * The class GraphSimulator is used to simulate how all the SimulationNodes are
@@ -7,6 +9,7 @@ import java.util.List;
 public class GraphSimulator {
 
     private SimulationNode[] simNodes;
+    private SimulationSpring[] springs;
 
     public GraphSimulator(Network network) {
         // First create a SimulationNode for each Node.
@@ -21,17 +24,23 @@ public class GraphSimulator {
             this.simNodes[i] = new SimulationNode(node,x,y,r,g,b);
         }
 
+        this.springs = new SimulationSpring[network.totalConnections()];
+        int i = 0;
+
         // Map the parents and children of the Nodes in the SimulationNodes, to
-        // the parents and children of the SimulationNodes.
+        // the parents and children of the SimulationNodes. While doing this,
+        // also add a spring between these connections.
         for (SimulationNode simNode : this.simNodes) {
             Node node = simNode.getNode();
 
-            // Chech the children
+            // Check the children
             List<Node> children = node.getChildren();
             for (Node child : children) {
                 for (SimulationNode otherSimNode : this.simNodes) {
                     if (otherSimNode.getNode().equals(child)) {
                         simNode.addChild(otherSimNode);
+                        this.springs[i] = new SimulationSpring(0.05, 0.01, simNode, otherSimNode);
+                        i++;
                     }
                 }
             }
@@ -42,6 +51,8 @@ public class GraphSimulator {
                 for (SimulationNode otherSimNode : this.simNodes) {
                     if (otherSimNode.getNode().equals(parent)) {
                         simNode.addParent(otherSimNode);
+                        this.springs[i] = new SimulationSpring(0.05, 0.01, simNode, otherSimNode);
+                        i++;
                     }
                 }
             }
@@ -54,7 +65,6 @@ public class GraphSimulator {
      */
     public void update() {
         
-
         // Go through each pair of nodes only once.
         for (int i = 0; i < this.simNodes.length-1; i++) {
             for (int j = i+1; j < this.simNodes.length; j++) {
@@ -62,14 +72,33 @@ public class GraphSimulator {
                 SimulationNode node1 = this.simNodes[i];
                 SimulationNode node2 = this.simNodes[j];
 
-                // Node positions
-                Vector p1 = new Vector(node1.getX(), node1.getY());
-                Vector p2 = new Vector(node2.getX(), node2.getY());
-
                 // Vector from node1 to node 2
-                Vector dir = Vector.subtract(p1, p2);
+                Vector dir = Vector.subtract(node1.getPosition(), node2.getPosition());
 
+                double repelForce =  0.00001 / dir.getLength();
+                dir.normalize();
+                dir.scale(repelForce);
+
+                node2.applyForce(dir);
+                dir.scale(-1);
+                node1.applyForce(dir);
             }
+        }
+
+        // Go through each spring and apply forces.
+        for (SimulationSpring spring : this.springs) {
+            SimulationNode simNode1 = spring.getFirstSimulationNode();
+            SimulationNode simNode2 = spring.getSecondSimulationNode();
+            
+            Vector dir = Vector.subtract(simNode1.getPosition(), simNode2.getPosition());
+            double actualLength = dir.getLength();
+            double difference = actualLength - spring.desiredLength();
+            double force = spring.calculateForce(difference);
+            dir.normalize();
+            dir.scale(force/2.0);
+            simNode1.applyForce(dir);
+            dir.scale(-1);
+            simNode2.applyForce(dir);
         }
 
         // Center of simulation.
@@ -82,12 +111,14 @@ public class GraphSimulator {
             // Force towards center.
             Vector centerForce = Vector.subtract(nodePosition, center);
             centerForce.normalize();
-            centerForce.scale(0.001);
+            centerForce.scale(0.0005);
             node.applyForce(centerForce);
 
-            // Add friction and update position.
-            node.setDx(node.getDx()*0.99);
-            node.setDy(node.getDy()*0.99);
+            // Friction here is the percentage of velocity kept
+            double velocity = node.getVelocity().getLength();
+            double friction = velocity < 0.00001 ? 0.01 : 0.90;
+            node.setDx(node.getDx()*friction);
+            node.setDy(node.getDy()*friction);
             node.updatePosition();
         }
     }
