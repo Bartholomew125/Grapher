@@ -56,6 +56,13 @@ public class SimulationNode {
     }
 
     /**
+     * Return a new Vector representing the position of this SimulationNode
+     */
+    public Vector getPosition() {
+        return new Vector(this.getX(), this.getY());
+    }
+
+    /**
      * Get the horizontal velocity of the SimulationNode.
      */
     public double getDx() {
@@ -67,6 +74,13 @@ public class SimulationNode {
      */
     public double getDy() {
         return this.dy;
+    }
+
+    /**
+     * Return a new Vector representing the velocity of this SimulationNode
+     */
+    public Vector getVelocity() {
+        return new Vector(this.getDx(), this.getDy());
     }
 
     /**
