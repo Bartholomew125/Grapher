@@ -13,15 +13,12 @@ public class TestNetwork extends Network {
 
         int iterations = numOfNodes;
         for (int i = 0; i < iterations; i++) {
-            boolean isParent = Math.random() < 0.5;
             Node node1 = nodes[(int) (Math.random() * numOfNodes)];
             Node node2 = nodes[(int) (Math.random() * numOfNodes)];
 
-            if (isParent) {
+            if (node1 != node2) {
                 node2.addParent(node1);
-            }
-            else{
-                node2.addChild(node1);
+                node1.addChild(node2);
             }
         }
 
