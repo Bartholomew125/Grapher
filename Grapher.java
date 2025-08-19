@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Polygon;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 import javax.swing.JPanel;
 
@@ -8,16 +9,23 @@ import javax.swing.JPanel;
  * The class Grapher extends JPanel, and is used to draw a GraphSimulation on
  * the display.
  */
-public class Grapher extends JPanel {
+public class Grapher extends JPanel implements MouseWheelListener {
 
     private GraphSimulator graphSimulator;
     private int width;
     private int height;
+    private double scale;
+    private double xOffset;
+    private double yOffset;
 
     public Grapher(GraphSimulator graphSimulator, int width, int height){
         this.width = width;
         this.height = height;
         this.graphSimulator = graphSimulator;
+        this.addMouseWheelListener(this);
+        this.scale = 1.0;
+        this.xOffset = 0.0;
+        this.yOffset = 0.0;
     }
     
     protected void drawLineWithWidth(Graphics g, int x1, int y1, int x2, int y2, int width) {
@@ -60,22 +68,22 @@ public class Grapher extends JPanel {
         // Show connecting lines
         for (int i = 0; i < this.graphSimulator.nodeCount(); i++) {
             SimulationNode simNode = this.graphSimulator.getSimNodes()[i];
-            int x = (int) (simNode.getX() * this.width);
-            int y = (int) (simNode.getY() * this.height);
+            int x = (int) (simNode.getX() * this.width * this.scale + this.xOffset);
+            int y = (int) (simNode.getY() * this.height * this.scale + this.yOffset);
 
             // Show child lines
             g.setColor(Color.RED);
             for (SimulationNode simChild : simNode.getChildren()) {
-                int xChild = (int) (simChild.getX() * this.width);
-                int yChild = (int) (simChild.getY() * this.height);
+                int xChild = (int) (simChild.getX() * this.width * this.scale + this.xOffset);
+                int yChild = (int) (simChild.getY() * this.height * this.scale + this.yOffset);
                 g.drawLine(x, y, xChild, yChild);
             }
 
             // Show parent lines
             g.setColor(Color.BLUE);
             for (SimulationNode simParent : simNode.getParents()) {
-                int xParent = (int) (simParent.getX() * this.width);
-                int yParent = (int) (simParent.getY() * this.height);
+                int xParent = (int) (simParent.getX() * this.width * this.scale + this.xOffset);
+                int yParent = (int) (simParent.getY() * this.height * this.scale + this.yOffset);
                 g.drawLine(x, y, xParent, yParent);
             }
         }
@@ -83,12 +91,31 @@ public class Grapher extends JPanel {
         // Show nodes
         for (int i = 0; i < this.graphSimulator.nodeCount(); i++) {
             SimulationNode simNode = this.graphSimulator.getSimNodes()[i];
-            int x = (int) (simNode.getX() * this.width);
-            int y = (int) (simNode.getY() * this.height);
+            int x = (int) (simNode.getX() * this.width * this.scale + this.xOffset);
+            int y = (int) (simNode.getY() * this.height * this.scale + this.yOffset);
 
-            int radius = 20;
+            int radius = (int) (20 * this.scale);
             g.setColor(new Color(simNode.getColorRed(), simNode.getColorGreen(), simNode.getColorBlue())); 
             g.fillOval(x-radius/2, y-radius/2, radius, radius);
         }
+    }
+    
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        double wheelRotation = e.getPreciseWheelRotation();
+        double scaleMultiplier = (wheelRotation > 0) 
+            ? Math.pow(0.9, wheelRotation)  // zoom out
+            : Math.pow(1.1, -wheelRotation); // zoom in
+
+        // World coords of cursor before zoom
+        double worldX = (e.getX() - xOffset) / scale;
+        double worldY = (e.getY() - yOffset) / scale;
+
+        // Apply zoom
+        scale *= scaleMultiplier;
+
+        // Recalculate offsets to keep cursor anchored
+        xOffset = e.getX() - worldX * scale;
+        yOffset = e.getY() - worldY * scale;
     }
 }
