@@ -2,6 +2,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JPanel;
 
@@ -17,12 +20,29 @@ public class Grapher extends JPanel implements MouseWheelListener {
     private double scale;
     private double xOffset;
     private double yOffset;
+    private Vector mousePos;
 
     public Grapher(GraphSimulator graphSimulator, int width, int height){
         this.width = width;
         this.height = height;
         this.graphSimulator = graphSimulator;
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                mousePos = new Vector(e.getX(), e.getY());
+            }
+        });
         this.addMouseWheelListener(this);
+        this.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                Vector newPos = new Vector(e.getX(), e.getY());
+                Vector deltaPos = Vector.subtract(mousePos, newPos);
+                xOffset += deltaPos.getX();
+                yOffset += deltaPos.getY();
+                mousePos = newPos;
+            }
+        });
         this.scale = 1.0;
         this.xOffset = 0.0;
         this.yOffset = 0.0;
@@ -99,6 +119,8 @@ public class Grapher extends JPanel implements MouseWheelListener {
             g.fillOval(x-radius/2, y-radius/2, radius, radius);
         }
     }
+
+
     
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
