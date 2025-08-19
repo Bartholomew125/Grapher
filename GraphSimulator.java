@@ -18,10 +18,11 @@ public class GraphSimulator {
             Node node = network.getNodes().get(i);
             double x = Math.random();
             double y = Math.random();
+            double mass = 10.0;
             float r = 0.0f;
             float g = 0.0f;
             float b = 0.0f;
-            this.simNodes[i] = new SimulationNode(node,x,y,r,g,b);
+            this.simNodes[i] = new SimulationNode(node,x,y,mass,r,g,b);
         }
 
         this.springs = new SimulationSpring[network.totalConnections()];
@@ -33,13 +34,16 @@ public class GraphSimulator {
         for (SimulationNode simNode : this.simNodes) {
             Node node = simNode.getNode();
 
+            double springLength = 0.1;
+            double springConstant = 0.1;
+
             // Check the children
             List<Node> children = node.getChildren();
             for (Node child : children) {
                 for (SimulationNode otherSimNode : this.simNodes) {
                     if (otherSimNode.getNode().equals(child)) {
                         simNode.addChild(otherSimNode);
-                        this.springs[i] = new SimulationSpring(0.05, 0.01, simNode, otherSimNode);
+                        this.springs[i] = new SimulationSpring(springLength, springConstant, simNode, otherSimNode);
                         i++;
                     }
                 }
@@ -51,7 +55,7 @@ public class GraphSimulator {
                 for (SimulationNode otherSimNode : this.simNodes) {
                     if (otherSimNode.getNode().equals(parent)) {
                         simNode.addParent(otherSimNode);
-                        this.springs[i] = new SimulationSpring(0.05, 0.01, simNode, otherSimNode);
+                        this.springs[i] = new SimulationSpring(springLength, springConstant, simNode, otherSimNode);
                         i++;
                     }
                 }
@@ -75,7 +79,7 @@ public class GraphSimulator {
                 // Vector from node1 to node 2
                 Vector dir = Vector.subtract(node1.getPosition(), node2.getPosition());
 
-                double repelForce =  0.00001 / dir.getLength();
+                double repelForce =  0.0001 / dir.getLength();
                 dir.normalize();
                 dir.scale(repelForce);
 
