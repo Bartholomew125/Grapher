@@ -10,13 +10,13 @@ import javax.swing.JFrame;
 public class Main {
 
     public static void main(String[] args) {
-        int width = 2000;
+        int width = 1000;
         int height = 1000;
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int screenWidth = gd.getDisplayMode().getWidth();
         int screenHeight = gd.getDisplayMode().getHeight();
 
-        Network network = new TestNetwork(20);
+        Network network = new TestNetwork(100);
         System.out.println(network.size());
         GraphSimulator graphsim = new GraphSimulator(network);
         Grapher graph = new Grapher(graphsim, width, height);
