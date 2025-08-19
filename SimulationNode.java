@@ -16,11 +16,12 @@ public class SimulationNode {
     private double y;
     private double dx;
     private double dy;
+    private double mass;
     private float red;
     private float green;
     private float blue;
 
-    public SimulationNode(Node node, double x, double y, float red, float green, float blue) {
+    public SimulationNode(Node node, double x, double y, double mass, float red, float green, float blue) {
         this.node = node;
         this.parents = new ArrayList<>();
         this.children = new ArrayList<>();
@@ -28,6 +29,7 @@ public class SimulationNode {
         this.y = y;
         this.dx = 0;
         this.dy = 0;
+        this.mass = mass;
         this.red = red;
         this.green = green;
         this.blue = blue;
@@ -98,6 +100,13 @@ public class SimulationNode {
     }
 
     /**
+     * Return the mass of this SimulationNode.
+     */
+    public double getMass() {
+        return this.mass;
+    }
+
+    /**
      * Return the node associated with this SimulationNode.
      */
     public Node getNode() {
@@ -130,8 +139,8 @@ public class SimulationNode {
      * the velocity of the SimulationNode.
      */
     public void applyForce(Vector force) {
-        this.dx = this.dx + force.getX();
-        this.dy = this.dy + force.getY();
+        this.dx = this.dx + force.getX() / this.getMass();
+        this.dy = this.dy + force.getY() / this.getMass();
     }
 
     /**
