@@ -93,6 +93,13 @@ public class Vector {
     }
 
     /**
+     * Scales the vector by the factor k.
+     */
+    public static Vector scale(Vector v, double k) {
+        return new Vector(v.getX()*k, v.getY()*k);
+    }
+
+    /**
      * Rotate this vector the given amount of radians counterclockwise
      */
     public void rotate(double radians) {
