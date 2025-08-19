@@ -118,4 +118,9 @@ public class Vector {
     public Vector copy() {
         return new Vector(this.getX(), this.getY());
     }
+
+    @Override
+    public String toString() {
+        return "["+this.getX()+","+this.getY()+"]";
+    }
 }
