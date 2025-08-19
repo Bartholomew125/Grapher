@@ -114,8 +114,9 @@ public class GraphSimulator {
 
             // Force towards center.
             Vector centerForce = Vector.subtract(nodePosition, center);
+            double distance = centerForce.getLength();
             centerForce.normalize();
-            centerForce.scale(0.0005);
+            centerForce.scale(Math.pow(0.1*distance, 2));
             node.applyForce(centerForce);
 
             // Friction here is the percentage of velocity kept
