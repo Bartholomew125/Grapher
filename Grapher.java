@@ -15,17 +15,14 @@ import javax.swing.JPanel;
 public class Grapher extends JPanel implements MouseWheelListener {
 
     private GraphSimulator graphSimulator;
-    private int width;
-    private int height;
     private double scale;
     private double xOffset;
     private double yOffset;
     private Vector mousePos;
 
     public Grapher(GraphSimulator graphSimulator, int width, int height){
-        this.width = width;
-        this.height = height;
         this.graphSimulator = graphSimulator;
+        this.scale = Math.min(width, height);
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -43,7 +40,6 @@ public class Grapher extends JPanel implements MouseWheelListener {
                 mousePos = newPos;
             }
         });
-        this.scale = 1.0;
         this.xOffset = 0.0;
         this.yOffset = 0.0;
     }
@@ -88,22 +84,22 @@ public class Grapher extends JPanel implements MouseWheelListener {
         // Show connecting lines
         for (int i = 0; i < this.graphSimulator.nodeCount(); i++) {
             SimulationNode simNode = this.graphSimulator.getSimNodes()[i];
-            int x = (int) (simNode.getX() * this.width * this.scale + this.xOffset);
-            int y = (int) (simNode.getY() * this.height * this.scale + this.yOffset);
+            int x = (int) (simNode.getX() * this.scale + this.xOffset);
+            int y = (int) (simNode.getY() * this.scale + this.yOffset);
 
             // Show child lines
             g.setColor(Color.RED);
             for (SimulationNode simChild : simNode.getChildren()) {
-                int xChild = (int) (simChild.getX() * this.width * this.scale + this.xOffset);
-                int yChild = (int) (simChild.getY() * this.height * this.scale + this.yOffset);
+                int xChild = (int) (simChild.getX() * this.scale + this.xOffset);
+                int yChild = (int) (simChild.getY() * this.scale + this.yOffset);
                 g.drawLine(x, y, xChild, yChild);
             }
 
             // Show parent lines
             g.setColor(Color.BLUE);
             for (SimulationNode simParent : simNode.getParents()) {
-                int xParent = (int) (simParent.getX() * this.width * this.scale + this.xOffset);
-                int yParent = (int) (simParent.getY() * this.height * this.scale + this.yOffset);
+                int xParent = (int) (simParent.getX() * this.scale + this.xOffset);
+                int yParent = (int) (simParent.getY() * this.scale + this.yOffset);
                 g.drawLine(x, y, xParent, yParent);
             }
         }
@@ -111,8 +107,8 @@ public class Grapher extends JPanel implements MouseWheelListener {
         // Show nodes
         for (int i = 0; i < this.graphSimulator.nodeCount(); i++) {
             SimulationNode simNode = this.graphSimulator.getSimNodes()[i];
-            int x = (int) (simNode.getX() * this.width * this.scale + this.xOffset);
-            int y = (int) (simNode.getY() * this.height * this.scale + this.yOffset);
+            int x = (int) (simNode.getX() * this.scale + this.xOffset);
+            int y = (int) (simNode.getY() * this.scale + this.yOffset);
 
             int radius = (int) (simNode.getRadius() * this.scale);
             g.setColor(new Color(simNode.getColorRed(), simNode.getColorGreen(), simNode.getColorBlue())); 
