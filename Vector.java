@@ -113,6 +113,13 @@ public class Vector {
     }
 
     /**
+     * Returns the distance from this Vector to the Vector v.
+     */
+    public double distanceTo(Vector v) {
+        return Vector.subtract(this, v).getLength();
+    }
+
+    /**
      * Creates a new copy of this vector.
      */
     public Vector copy() {
