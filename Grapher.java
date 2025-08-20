@@ -114,7 +114,7 @@ public class Grapher extends JPanel implements MouseWheelListener {
             int x = (int) (simNode.getX() * this.width * this.scale + this.xOffset);
             int y = (int) (simNode.getY() * this.height * this.scale + this.yOffset);
 
-            int radius = (int) (20 * this.scale);
+            int radius = (int) (simNode.getRadius() * this.scale);
             g.setColor(new Color(simNode.getColorRed(), simNode.getColorGreen(), simNode.getColorBlue())); 
             g.fillOval(x-radius/2, y-radius/2, radius, radius);
         }

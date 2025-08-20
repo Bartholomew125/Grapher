@@ -17,11 +17,12 @@ public class SimulationNode {
     private double dx;
     private double dy;
     private double mass;
+    private double radius;
     private float red;
     private float green;
     private float blue;
 
-    public SimulationNode(Node node, double x, double y, double mass, float red, float green, float blue) {
+    public SimulationNode(Node node, double x, double y, double mass, double radius, float red, float green, float blue) {
         this.node = node;
         this.parents = new ArrayList<>();
         this.children = new ArrayList<>();
@@ -30,6 +31,7 @@ public class SimulationNode {
         this.dx = 0;
         this.dy = 0;
         this.mass = mass;
+        this.radius = radius;
         this.red = red;
         this.green = green;
         this.blue = blue;
@@ -104,6 +106,13 @@ public class SimulationNode {
      */
     public double getMass() {
         return this.mass;
+    }
+
+    /**
+     * Return the radius of this SimulationNode.
+     */
+    public double getRadius() {
+        return this.radius;
     }
 
     /**
