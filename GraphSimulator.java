@@ -1,6 +1,4 @@
-import java.security.DigestOutputStream;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * The class GraphSimulator is used to simulate how all the SimulationNodes are
@@ -22,7 +20,7 @@ public class GraphSimulator {
             float r = 0.0f;
             float g = 0.0f;
             float b = 0.0f;
-            this.simNodes[i] = new SimulationNode(node,x,y,mass,r,g,b);
+            this.simNodes[i] = new SimulationNode(node,x,y,mass, 0.01,r,g,b);
         }
 
         this.springs = new SimulationSpring[network.totalConnections()];
@@ -126,6 +124,21 @@ public class GraphSimulator {
             node.setDy(node.getDy()*friction);
             node.updatePosition();
         }
+    }
+
+    /**
+     * Return the SimulationNode at the given simulation x and y coordinates. 
+     * If there is no SimulationNode at that position, return null.
+     */
+    public SimulationNode nodeAtPosition(double x, double y) {
+        for (SimulationNode node : this.simNodes) {
+            Vector nodePos = new Vector(node.getX(), node.getY());
+            Vector inputPos = new Vector(x, y);
+            if (inputPos.distanceTo(nodePos)-node.getRadius() <= 0) {
+                return node;
+            }
+        }
+        return null;
     }
 
     /**
