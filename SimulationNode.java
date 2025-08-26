@@ -53,10 +53,24 @@ public class SimulationNode {
     }
 
     /**
+     * Set the horizontal position of the SimulationNode.
+     */
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    /**
      * Get the vertical position of the SimulationNode.
      */
     public double getY() {
         return this.y;
+    }
+
+    /**
+     * Set the vertical position of the SimulationNode.
+     */
+    public void setY(double y) {
+        this.y = y;
     }
 
     /**
