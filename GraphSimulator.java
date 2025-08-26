@@ -17,10 +17,11 @@ public class GraphSimulator {
             double x = Math.random();
             double y = Math.random();
             double mass = 10.0;
+            double radius = 0.03;
             float r = 0.0f;
             float g = 0.0f;
             float b = 0.0f;
-            this.simNodes[i] = new SimulationNode(node,x,y,mass, 0.01,r,g,b);
+            this.simNodes[i] = new SimulationNode(node, x, y, mass, radius, r, g, b);
         }
 
         this.springs = new SimulationSpring[network.totalConnections()];
@@ -32,7 +33,7 @@ public class GraphSimulator {
         for (SimulationNode simNode : this.simNodes) {
             Node node = simNode.getNode();
 
-            double springLength = 0.1;
+            double springLength = 0.08;
             double springConstant = 0.1;
 
             // Check the children
@@ -66,10 +67,10 @@ public class GraphSimulator {
      * suppose to move.
      */
     public void update() {
-        
+
         // Go through each pair of nodes only once.
-        for (int i = 0; i < this.simNodes.length-1; i++) {
-            for (int j = i+1; j < this.simNodes.length; j++) {
+        for (int i = 0; i < this.simNodes.length - 1; i++) {
+            for (int j = i + 1; j < this.simNodes.length; j++) {
 
                 SimulationNode node1 = this.simNodes[i];
                 SimulationNode node2 = this.simNodes[j];
@@ -77,7 +78,7 @@ public class GraphSimulator {
                 // Vector from node1 to node 2
                 Vector dir = Vector.subtract(node1.getPosition(), node2.getPosition());
 
-                double repelForce =  0.0001 / dir.getLength();
+                double repelForce = 0.0001 / dir.getLength();
                 dir.normalize();
                 dir.scale(repelForce);
 
@@ -91,13 +92,13 @@ public class GraphSimulator {
         for (SimulationSpring spring : this.springs) {
             SimulationNode simNode1 = spring.getFirstSimulationNode();
             SimulationNode simNode2 = spring.getSecondSimulationNode();
-            
+
             Vector dir = Vector.subtract(simNode1.getPosition(), simNode2.getPosition());
             double actualLength = dir.getLength();
             double difference = actualLength - spring.desiredLength();
             double force = spring.calculateForce(difference);
             dir.normalize();
-            dir.scale(force/2.0);
+            dir.scale(force / 2.0);
             simNode1.applyForce(dir);
             dir.scale(-1);
             simNode2.applyForce(dir);
@@ -114,27 +115,27 @@ public class GraphSimulator {
             Vector centerForce = Vector.subtract(nodePosition, center);
             double distance = centerForce.getLength();
             centerForce.normalize();
-            centerForce.scale(Math.pow(0.1*distance, 2));
+            centerForce.scale(Math.pow(0.1 * distance, 2));
             node.applyForce(centerForce);
 
             // Friction here is the percentage of velocity kept
             double velocity = node.getVelocity().getLength();
             double friction = velocity < 0.00001 ? 0.01 : 0.90;
-            node.setDx(node.getDx()*friction);
-            node.setDy(node.getDy()*friction);
+            node.setDx(node.getDx() * friction);
+            node.setDy(node.getDy() * friction);
             node.updatePosition();
         }
     }
 
     /**
-     * Return the SimulationNode at the given simulation x and y coordinates. 
+     * Return the SimulationNode at the given simulation x and y coordinates.
      * If there is no SimulationNode at that position, return null.
      */
     public SimulationNode nodeAtPosition(double x, double y) {
         for (SimulationNode node : this.simNodes) {
             Vector nodePos = new Vector(node.getX(), node.getY());
             Vector inputPos = new Vector(x, y);
-            if (inputPos.distanceTo(nodePos)-node.getRadius() <= 0) {
+            if (inputPos.distanceTo(nodePos) - node.getRadius() <= 0) {
                 return node;
             }
         }
