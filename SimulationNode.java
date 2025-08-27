@@ -130,6 +130,13 @@ public class SimulationNode {
     }
 
     /**
+     * Set the radius of this SimulationNode.
+     */
+    public void setRadius(double r) {
+        this.radius = r;
+    }
+
+    /**
      * Return the node associated with this SimulationNode.
      */
     public Node getNode() {
