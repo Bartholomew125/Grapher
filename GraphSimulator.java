@@ -17,7 +17,7 @@ public class GraphSimulator {
             double x = Math.random();
             double y = Math.random();
             double mass = 10.0;
-            double radius = 0.03;
+            double radius = 0.01;
             float r = 0.0f;
             float g = 0.0f;
             float b = 0.0f;
