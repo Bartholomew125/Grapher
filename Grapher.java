@@ -70,10 +70,6 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (this.mousePos != null) {
-            System.out.println(this.mousePos.toString());
-        }
-
         // Make sure draggingNode is attached even when not moving mouse.
         if (this.draggingNode != null) {
             double newX = (this.mousePos.getX() - this.xOffset) / this.scale;
