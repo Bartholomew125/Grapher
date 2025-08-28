@@ -120,7 +120,7 @@ public class GraphSimulator {
 
             // Friction here is the percentage of velocity kept
             double velocity = node.getVelocity().getLength();
-            double friction = velocity < 0.00001 ? 0.01 : 0.90;
+            double friction = velocity < 0.00001 ? 0.01 : 0.99;
             node.setDx(node.getDx() * friction);
             node.setDy(node.getDy() * friction);
             node.updatePosition();
@@ -141,6 +141,15 @@ public class GraphSimulator {
         }
         return null;
     }
+
+    public double kineticEnergi() {
+        double total = 0;
+        for (SimulationNode simNode : this.getSimNodes()) {
+            total = total + 0.5 * simNode.getMass() * simNode.getVelocity().getLength() * simNode.getVelocity().getLength();
+        }
+        return total;
+    }
+
 
     /**
      * Return the number of nodes in this simulation.
