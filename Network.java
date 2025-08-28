@@ -8,14 +8,12 @@ import java.util.ArrayList;
 public class Network {
 
     private List<Node> nodes;
-    private int totalConnections;
 
     /**
      * Initialize a new empty network.
      */
     public Network() {
         this.nodes = new ArrayList<>();
-        this.totalConnections = 0;
     }
 
     /**
@@ -23,7 +21,6 @@ public class Network {
      */
     public void addNode(Node node) {
         this.nodes.add(node);
-        this.totalConnections += node.getChildren().size() + node.getParents().size();
     }
 
     /**
@@ -42,8 +39,16 @@ public class Network {
         return this.nodes.size();
     }
 
+    /**
+     * Return the total number of connections in the Network.
+     */
     public int totalConnections() {
-        return this.totalConnections;
+        int connections = 0;
+        for (Node node : this.getNodes()) {
+            connections = connections + node.getChildren().size();
+            connections = connections + node.getParents().size();
+        }
+        return connections;
     }
 
     /**
