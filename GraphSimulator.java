@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.List;
 
 /**
@@ -18,10 +19,8 @@ public class GraphSimulator {
             double y = Math.random();
             double mass = 10.0;
             double radius = 0.01;
-            float r = 0.0f;
-            float g = 0.0f;
-            float b = 0.0f;
-            this.simNodes[i] = new SimulationNode(node, x, y, mass, radius, r, g, b);
+            Color color = Color.WHITE;
+            this.simNodes[i] = new SimulationNode(node, x, y, mass, radius, color);
         }
 
         this.springs = new SimulationSpring[network.totalConnections()];

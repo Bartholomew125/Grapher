@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +19,9 @@ public class SimulationNode {
     private double dy;
     private double mass;
     private double radius;
-    private float red;
-    private float green;
-    private float blue;
+    private Color color;
 
-    public SimulationNode(Node node, double x, double y, double mass, double radius, float red, float green, float blue) {
+    public SimulationNode(Node node, double x, double y, double mass, double radius, Color color) {
         this.node = node;
         this.parents = new ArrayList<>();
         this.children = new ArrayList<>();
@@ -32,9 +31,7 @@ public class SimulationNode {
         this.dy = 0;
         this.mass = mass;
         this.radius = radius;
-        this.red = red;
-        this.green = green;
-        this.blue = blue;
+        this.color = color;
     }
 
     /**
@@ -152,24 +149,10 @@ public class SimulationNode {
     }
 
     /**
-     * Get the red color value of the SimulationNode.
+     * Get the color value of the SimulationNode.
      */
-    public float getColorRed() {
-        return this.red;
-    }
-
-    /**
-     * Get the green color value of the SimulationNode.
-     */
-    public float getColorGreen() {
-        return this.green;
-    }
-
-    /**
-     * Get the blue color value of the SimulationNode.
-     */
-    public float getColorBlue() {
-        return this.blue;
+    public Color getColor() {
+        return this.color;
     }
 
     /**
