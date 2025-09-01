@@ -81,6 +81,14 @@ public class SimulationNode {
     }
 
     /**
+     * Set the position of this SimulationNode using a Vector.
+     */
+    public void setPosition(Vector pos) {
+        this.setX(pos.getX());
+        this.setY(pos.getY());
+    }
+
+    /**
      * Get the horizontal velocity of the SimulationNode.
      */
     public double getDx() {
