@@ -69,23 +69,6 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Make sure draggingNode is attached even when not moving mouse.
-        if (this.draggingNode != null) {
-            this.draggingNode.setPosition(fromScreenSpaceToWorldSpace(this.mousePos));
-            this.draggingNode.setDx(0);
-            this.draggingNode.setDy(0);
-        }
-        else if (this.mousePos != null) {
-            for (SimulationNode node : this.graphSimulator.getSimNodes()) {
-                if (this.fromScreenSpaceToWorldSpace(this.mousePos).distanceTo(node.getPosition()) <= node.getRadius()) {
-                    Vector screenPos = fromWorldSpaceToScreenSpace(node.getPosition());
-                    double radius = node.getRadius() * this.scale;
-                    Vector textPos = Vector.add(screenPos, new Vector(radius, -radius));
-                    g.drawString(node.getNode().getContent().toString(), (int) textPos.getX(), (int) textPos.getY());
-                }
-            }
-        }
-
         // Show connecting lines
         for (int i = 0; i < this.graphSimulator.nodeCount(); i++) {
             SimulationNode simNode = this.graphSimulator.getSimNodes()[i];
@@ -118,6 +101,23 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
             int radius = (int) (simNode.getRadius() * this.scale);
             g.setColor(new Color(simNode.getColorRed(), simNode.getColorGreen(), simNode.getColorBlue()));
             g.fillOval(x - radius, y - radius, radius*2, radius*2);
+        }
+
+        // Make sure draggingNode is attached even when not moving mouse.
+        if (this.draggingNode != null) {
+            this.draggingNode.setPosition(fromScreenSpaceToWorldSpace(this.mousePos));
+            this.draggingNode.setDx(0);
+            this.draggingNode.setDy(0);
+        }
+        else if (this.mousePos != null) {
+            for (SimulationNode node : this.graphSimulator.getSimNodes()) {
+                if (this.fromScreenSpaceToWorldSpace(this.mousePos).distanceTo(node.getPosition()) <= node.getRadius()) {
+                    Vector screenPos = fromWorldSpaceToScreenSpace(node.getPosition());
+                    double radius = node.getRadius() * this.scale;
+                    Vector textPos = Vector.add(screenPos, new Vector(radius, -radius));
+                    g.drawString(node.getNode().getContent().toString(), (int) textPos.getX(), (int) textPos.getY());
+                }
+            }
         }
     }
 
