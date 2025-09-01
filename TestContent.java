@@ -11,7 +11,7 @@ public class TestContent implements NodeContent {
     }
 
     @Override
-    public String getContent() {
+    public String toString() {
         return this.content;
     }
 }

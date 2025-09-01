@@ -7,5 +7,5 @@ public interface NodeContent {
     /**
      * Get some content.
      */
-    public String getContent();
+    public String toString();
 }

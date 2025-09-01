@@ -36,7 +36,6 @@ public class Main {
             if (System.nanoTime()-currentTime >= nanosecondsPerFrame) {
                 currentTime = System.nanoTime();
                 graphsim.update();
-                System.out.println(graphsim.kineticEnergi());
                 frame.repaint();
             }
         }
