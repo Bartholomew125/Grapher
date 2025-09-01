@@ -79,7 +79,9 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
             for (SimulationNode node : this.graphSimulator.getSimNodes()) {
                 if (this.fromScreenSpaceToWorldSpace(this.mousePos).distanceTo(node.getPosition()) <= node.getRadius()) {
                     Vector screenPos = fromWorldSpaceToScreenSpace(node.getPosition());
-                    g.drawString(node.getNode().getContent().toString(), (int) screenPos.getX(), (int) screenPos.getY());
+                    double radius = node.getRadius() * this.scale;
+                    Vector textPos = Vector.add(screenPos, new Vector(radius, -radius));
+                    g.drawString(node.getNode().getContent().toString(), (int) textPos.getX(), (int) textPos.getY());
                 }
             }
         }
