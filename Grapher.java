@@ -78,7 +78,9 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
         else if (this.mousePos != null) {
             for (SimulationNode node : this.graphSimulator.getSimNodes()) {
                 if (this.fromScreenSpaceToWorldSpace(this.mousePos).distanceTo(node.getPosition()) <= node.getRadius()) {
-                    System.out.println("BRUH");
+                    Vector screenPos = fromWorldSpaceToScreenSpace(node.getPosition());
+                    System.out.println(screenPos.toString() + " " + node.getNode().getContent().getContent());
+                    g.drawString(node.getNode().getContent().getContent(), (int) screenPos.getX(), (int) screenPos.getY());
                 }
             }
         }
@@ -123,12 +125,23 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
      * space.
      */
     private Vector fromScreenSpaceToWorldSpace(Vector screenPos) {
-        Vector worldPos = new Vector(
-                screenPos.getX() - this.xOffset,
-                screenPos.getY() - this.yOffset
-                );
+        Vector worldPos = screenPos.copy();
+        worldPos.setX(worldPos.getX() - this.xOffset);
+        worldPos.setY(worldPos.getY() - this.yOffset);
         worldPos.scale(1.0/this.scale);
         return worldPos;
+    }
+
+    /**
+     * Converts a screen coordinate to a world coordinate in graph simulation
+     * space.
+     */
+    private Vector fromWorldSpaceToScreenSpace(Vector worldPos) {
+        Vector screenPos = worldPos.copy();
+        screenPos.scale(this.scale);
+        screenPos.setX(screenPos.getX() + this.xOffset);
+        screenPos.setY(screenPos.getY() + this.yOffset);
+        return screenPos;
     }
 
     @Override
