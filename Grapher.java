@@ -76,6 +76,8 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
             double newY = (this.mousePos.getY() - this.yOffset) / this.scale;
             this.draggingNode.setX(newX);
             this.draggingNode.setY(newY);
+            this.draggingNode.setDx(0);
+            this.draggingNode.setDy(0);
         }
 
         // Show connecting lines
