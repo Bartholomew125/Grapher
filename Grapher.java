@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -30,6 +31,8 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
         this.addMouseListener(this);
         this.xOffset = 0.0;
         this.yOffset = 0.0;
+        this.mousePos = new Vector(0, 0);
+        this.setBackground(Color.DARK_GRAY);
     }
 
     protected void drawLineWithWidth(Graphics g, int x1, int y1, int x2, int y2, int width) {
@@ -69,6 +72,13 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        // Make sure draggingNode is attached even when not moving mouse.
+        if (this.draggingNode != null) {
+            this.draggingNode.setPosition(fromScreenSpaceToWorldSpace(this.mousePos));
+            this.draggingNode.setDx(0);
+            this.draggingNode.setDy(0);
+        }
+
         // Show connecting lines
         for (int i = 0; i < this.graphSimulator.nodeCount(); i++) {
             SimulationNode simNode = this.graphSimulator.getSimNodes()[i];
@@ -76,7 +86,7 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
             int y = (int) (simNode.getY() * this.scale + this.yOffset);
 
             // Show child lines
-            g.setColor(Color.RED);
+            g.setColor(Color.GREEN);
             for (SimulationNode simChild : simNode.getChildren()) {
                 int xChild = (int) (simChild.getX() * this.scale + this.xOffset);
                 int yChild = (int) (simChild.getY() * this.scale + this.yOffset);
@@ -99,26 +109,41 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
             int y = (int) (simNode.getY() * this.scale + this.yOffset);
 
             int radius = (int) (simNode.getRadius() * this.scale);
-            g.setColor(new Color(simNode.getColorRed(), simNode.getColorGreen(), simNode.getColorBlue()));
+            g.setColor(simNode.getColor());
             g.fillOval(x - radius, y - radius, radius*2, radius*2);
         }
 
-        // Make sure draggingNode is attached even when not moving mouse.
-        if (this.draggingNode != null) {
-            this.draggingNode.setPosition(fromScreenSpaceToWorldSpace(this.mousePos));
-            this.draggingNode.setDx(0);
-            this.draggingNode.setDy(0);
-        }
-        else if (this.mousePos != null) {
-            for (SimulationNode node : this.graphSimulator.getSimNodes()) {
-                if (this.fromScreenSpaceToWorldSpace(this.mousePos).distanceTo(node.getPosition()) <= node.getRadius()) {
-                    Vector screenPos = fromWorldSpaceToScreenSpace(node.getPosition());
-                    double radius = node.getRadius() * this.scale;
-                    Vector textPos = Vector.add(screenPos, new Vector(radius, -radius));
-                    g.drawString(node.getNode().getContent().toString(), (int) textPos.getX(), (int) textPos.getY());
-                }
+        // Show content when mouse over
+        for (SimulationNode node : this.graphSimulator.getSimNodes()) {
+            if (this.fromScreenSpaceToWorldSpace(this.mousePos).distanceTo(node.getPosition()) <= node.getRadius()) {
+                this.showContentPopup(g, node);
             }
+            
         }
+    }
+
+    /**
+     * Draws a box containing the contents of the node.
+     */
+    private void showContentPopup(Graphics g, SimulationNode node) {
+        Vector screenPos = fromWorldSpaceToScreenSpace(node.getPosition());
+        double radius = node.getRadius() * this.scale;
+        String content = node.getNode().getContent().toString();
+        Vector pos = Vector.add(screenPos, new Vector(radius, -radius));
+
+        g.setFont(new Font("ComicSans", Font.BOLD, 20));
+        
+        int x = (int) pos.getX();
+        int y = (int) pos.getY();
+        int width = g.getFontMetrics().stringWidth(content);
+        int ascent = g.getFontMetrics().getAscent();
+        int decent = g.getFontMetrics().getDescent();
+        int height = ascent + decent;
+
+        g.setColor(new Color(255, 165, 0));
+        g.fillRect(x, y-ascent, width, height);
+        g.setColor(Color.DARK_GRAY);
+        g.drawString(content, x, y);
     }
 
     /**
