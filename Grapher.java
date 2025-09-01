@@ -60,8 +60,7 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
 
         for (Vector point1 : points1) {
             for (Vector point2 : points2) {
-                g.drawLine((int) point1.getX(), (int) point1.getY(), (int) point2.getX(),
-                        (int) point2.getY());
+                g.drawLine((int) point1.getX(), (int) point1.getY(), (int) point2.getX(), (int) point2.getY());
             }
         }
     }
@@ -72,12 +71,16 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
 
         // Make sure draggingNode is attached even when not moving mouse.
         if (this.draggingNode != null) {
-            double newX = (this.mousePos.getX() - this.xOffset) / this.scale;
-            double newY = (this.mousePos.getY() - this.yOffset) / this.scale;
-            this.draggingNode.setX(newX);
-            this.draggingNode.setY(newY);
+            this.draggingNode.setPosition(fromScreenSpaceToWorldSpace(this.mousePos));
             this.draggingNode.setDx(0);
             this.draggingNode.setDy(0);
+        }
+        else if (this.mousePos != null) {
+            for (SimulationNode node : this.graphSimulator.getSimNodes()) {
+                if (this.fromScreenSpaceToWorldSpace(this.mousePos).distanceTo(node.getPosition()) <= node.getRadius()) {
+                    System.out.println("BRUH");
+                }
+            }
         }
 
         // Show connecting lines
@@ -115,6 +118,19 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
         }
     }
 
+    /**
+     * Converts a screen coordinate to a world coordinate in graph simulation
+     * space.
+     */
+    private Vector fromScreenSpaceToWorldSpace(Vector screenPos) {
+        Vector worldPos = new Vector(
+                screenPos.getX() - this.xOffset,
+                screenPos.getY() - this.yOffset
+                );
+        worldPos.scale(1.0/this.scale);
+        return worldPos;
+    }
+
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         double wheelRotation = e.getPreciseWheelRotation();
@@ -138,11 +154,8 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
     public void mouseDragged(MouseEvent e) {
         Vector newPos = new Vector(e.getX(), e.getY());
         if (this.draggingNode != null) {
+            this.draggingNode.setPosition(fromScreenSpaceToWorldSpace(newPos));
             this.mousePos = new Vector(e.getX(), e.getY());
-            double newX = (newPos.getX() - this.xOffset) / this.scale;
-            double newY = (newPos.getY() - this.yOffset) / this.scale;
-            this.draggingNode.setX(newX);
-            this.draggingNode.setY(newY);
         } else {
             Vector deltaPos = Vector.subtract(this.mousePos, newPos);
             this.xOffset += deltaPos.getX();
@@ -154,11 +167,8 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
     @Override
     public void mousePressed(MouseEvent e) {
         this.mousePos = new Vector(e.getX(), e.getY());
-        // Scale screen space mouse position to world space to check for
-        // accurate collisions.
-        double scaledX = (this.mousePos.getX() - this.xOffset) / this.scale;
-        double scaledY = (this.mousePos.getY() - this.yOffset) / this.scale;
-        this.draggingNode = this.graphSimulator.nodeAtPosition(scaledX, scaledY);
+        Vector worldPos = fromScreenSpaceToWorldSpace(this.mousePos);
+        this.draggingNode = this.graphSimulator.nodeAtPosition(worldPos.getX(), worldPos.getY());
     }
 
     @Override
@@ -167,11 +177,14 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
     }
 
     @Override
+    public void mouseMoved(MouseEvent e) {
+        this.mousePos = new Vector(e.getX(), e.getY());
+    }
+
+    @Override
     public void mouseClicked(MouseEvent e) {}
     @Override
     public void mouseEntered(MouseEvent e) {}
     @Override
     public void mouseExited(MouseEvent e) {}
-    @Override
-    public void mouseMoved(MouseEvent e) {}
 }
