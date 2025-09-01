@@ -120,7 +120,7 @@ public class GraphSimulator {
 
             // Friction here is the percentage of velocity kept
             double velocity = node.getVelocity().getLength();
-            double friction = velocity < 0.00001 ? 0.01 : 0.99;
+            double friction = velocity < 0.0001 ? 0.5 : 0.90;
             node.setDx(node.getDx() * friction);
             node.setDy(node.getDy() * friction);
             node.updatePosition();
