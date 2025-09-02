@@ -118,7 +118,6 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
             if (this.fromScreenSpaceToWorldSpace(this.mousePos).distanceTo(node.getPosition()) <= node.getRadius()) {
                 this.showContentPopup(g, node);
             }
-            
         }
     }
 
@@ -138,12 +137,24 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
         int width = g.getFontMetrics().stringWidth(content);
         int ascent = g.getFontMetrics().getAscent();
         int decent = g.getFontMetrics().getDescent();
-        int height = ascent + decent;
+        int leading = g.getFontMetrics().getLeading();
+        // int height = ascent + decent;
+
+        int widthPadding = 10;
+        int heightPadding = 10;
 
         g.setColor(new Color(255, 165, 0));
-        g.fillRect(x, y-ascent, width, height);
+        g.fillRoundRect(x, y-ascent-heightPadding*2, width+2*widthPadding, ascent+decent+2*heightPadding, 20, 20);
+        
+        // g.setColor(Color.RED);
+        // g.drawRect(x, y-ascent, width, ascent);
+        // g.setColor(Color.PINK);
+        // g.drawRect(x, y, width, decent);
+        // g.setColor(Color.CYAN);
+        // g.drawRect(x, y+decent, width, leading);
+
         g.setColor(Color.DARK_GRAY);
-        g.drawString(content, x, y);
+        g.drawString(content, x+widthPadding, y-heightPadding);
     }
 
     /**
