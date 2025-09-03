@@ -1,4 +1,3 @@
-#! /bin/bash
-javac Main.java
-java Main.java
-rm *.class
+#!/bin/bash
+javac -d ./class ./src/*.java
+java -classpath ./class Main
