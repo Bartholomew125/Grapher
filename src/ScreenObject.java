@@ -6,6 +6,6 @@ import java.awt.Graphics;
  */
 public interface ScreenObject {
     public void render(Graphics g);
-    public void isUnder(int x, int y);
+    public boolean isUnder(int x, int y);
 }
 
