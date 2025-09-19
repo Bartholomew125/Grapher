@@ -3,6 +3,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -13,7 +15,7 @@ import javax.swing.JPanel;
  * The class Grapher extends JPanel, and is used to draw a GraphSimulation on
  * the display.
  */
-public class Grapher extends JPanel implements MouseWheelListener, MouseMotionListener, MouseListener {
+public class Grapher extends JPanel implements MouseWheelListener, MouseMotionListener, MouseListener, KeyListener {
 
     private GraphSimulator graphSimulator;
     private double scale;
@@ -21,6 +23,7 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
     private double yOffset;
     private Vector mousePos;
     private SimulationNode draggingNode;
+    private InputField inputField;
 
     public Grapher(GraphSimulator graphSimulator, int width, int height) {
         this.graphSimulator = graphSimulator;
@@ -29,10 +32,14 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
         this.addMouseWheelListener(this);
         this.addMouseMotionListener(this);
         this.addMouseListener(this);
+        this.addKeyListener(this);
         this.xOffset = 0.0;
         this.yOffset = 0.0;
         this.mousePos = new Vector(0, 0);
         this.setBackground(Color.DARK_GRAY);
+        this.setFocusable(true);
+
+        this.inputField = new InputField(50, 50, 200, 50);
     }
 
     protected void drawLineWithWidth(Graphics g, int x1, int y1, int x2, int y2, int width) {
@@ -119,6 +126,8 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
                 this.showContentPopup(g, node);
             }
         }
+
+        this.inputField.render(g);
     }
 
     /**
@@ -232,9 +241,31 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {
+        if (this.inputField.isUnder(e.getX(), e.getY())) { 
+            this.inputField.isFocused(true); 
+        }
+        else { this.inputField.isFocused(false); }
+    }
+
     @Override
     public void mouseEntered(MouseEvent e) {}
     @Override
     public void mouseExited(MouseEvent e) {}
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (this.inputField.isFocused()) {
+            if ((int) e.getKeyChar() == 8) {
+                this.inputField.deleteCharacter();
+            }
+            else {
+                this.inputField.addCharacter(e.getKeyChar());
+            }
+        }
+    }
+    @Override
+    public void keyReleased(KeyEvent e) {}
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
 }
