@@ -18,7 +18,7 @@ public class GraphSimulator {
             double x = Math.random();
             double y = Math.random();
             double mass = 10.0;
-            double radius = 0.01;
+            double radius = 0.02;
             Color color = Color.WHITE;
             this.simNodes[i] = new SimulationNode(node, x, y, mass, radius, color);
         }
@@ -33,7 +33,7 @@ public class GraphSimulator {
             Node node = simNode.getNode();
 
             double springLength = 0.08;
-            double springConstant = 0.1;
+            double springConstant = 2;
 
             // Check the children
             List<Node> children = node.getChildren();
@@ -114,12 +114,12 @@ public class GraphSimulator {
             Vector centerForce = Vector.subtract(nodePosition, center);
             double distance = centerForce.getLength();
             centerForce.normalize();
-            centerForce.scale(Math.pow(0.1 * distance, 2));
+            centerForce.scale(Math.pow(0.01 * distance, 2));
             node.applyForce(centerForce);
 
             // Friction here is the percentage of velocity kept
             double velocity = node.getVelocity().getLength();
-            double friction = velocity < 0.0001 ? 0.5 : 0.90;
+            double friction = velocity < 0.0001 ? 0.5 : 0.95;
             node.setDx(node.getDx() * friction);
             node.setDy(node.getDy() * friction);
             node.updatePosition();
