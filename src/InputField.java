@@ -48,7 +48,7 @@ public class InputField extends AbstractScreenObject {
 
     public void addCharacter(char c) {
         if (this.textWidth >= this.getWidth()) { return; }
-        if ((int) c == 65535) { return; }
+        if ((int) c == 65535 || (int) c == 27) { return; }
         this.text = this.text + c;
     }
 
@@ -56,6 +56,10 @@ public class InputField extends AbstractScreenObject {
         if (this.text.length() > 0) {
             this.text = this.text.substring(0, this.text.length()-1);
         }
+    }
+
+    public String getText() {
+        return this.text;
     }
 
 }
