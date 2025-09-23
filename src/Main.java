@@ -11,7 +11,7 @@ public class Main {
 
     public static void main(String[] args) {
         int width = 1000;
-        int height = 500;
+        int height = 800;
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int screenWidth = gd.getDisplayMode().getWidth();
         int screenHeight = gd.getDisplayMode().getHeight();
