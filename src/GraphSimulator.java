@@ -9,6 +9,10 @@ public class GraphSimulator {
 
     private SimulationNode[] simNodes;
     private SimulationSpring[] springs;
+    private double centerForceMultiplier;
+    private double repelForceMultiplier;
+    private double springLengthMultiplier;
+    private double springConstantMultiplier;
 
     public GraphSimulator(Network network) {
         // First create a SimulationNode for each Node.
@@ -21,6 +25,11 @@ public class GraphSimulator {
             double radius = 0.02;
             Color color = Color.WHITE;
             this.simNodes[i] = new SimulationNode(node, x, y, mass, radius, color);
+
+            this.centerForceMultiplier = 1;
+            this.repelForceMultiplier = 1;
+            this.springLengthMultiplier = 1;
+            this.springConstantMultiplier = 1;
         }
 
         this.springs = new SimulationSpring[network.totalConnections()];
@@ -32,8 +41,8 @@ public class GraphSimulator {
         for (SimulationNode simNode : this.simNodes) {
             Node node = simNode.getNode();
 
-            double springLength = 0.08;
-            double springConstant = 2;
+            double springLength = 0.2 * this.springLengthMultiplier;
+            double springConstant = 0.5 * this.springConstantMultiplier;
 
             // Check the children
             List<Node> children = node.getChildren();
@@ -77,7 +86,7 @@ public class GraphSimulator {
                 // Vector from node1 to node 2
                 Vector dir = Vector.subtract(node1.getPosition(), node2.getPosition());
 
-                double repelForce = 0.0001 / dir.getLength();
+                double repelForce = 0.0001*this.repelForceMultiplier / dir.getLength();
                 dir.normalize();
                 dir.scale(repelForce);
 
@@ -114,7 +123,7 @@ public class GraphSimulator {
             Vector centerForce = Vector.subtract(nodePosition, center);
             double distance = centerForce.getLength();
             centerForce.normalize();
-            centerForce.scale(Math.pow(0.01 * distance, 2));
+            centerForce.scale(Math.pow(0.1 * this.centerForceMultiplier * distance, 2));
             node.applyForce(centerForce);
 
             // Friction here is the percentage of velocity kept
@@ -149,7 +158,6 @@ public class GraphSimulator {
         return total;
     }
 
-
     /**
      * Return the number of nodes in this simulation.
      */
@@ -162,6 +170,34 @@ public class GraphSimulator {
      */
     public SimulationNode[] getSimNodes() {
         return this.simNodes;
+    }
+
+    /**
+     *  Set the multiplier for center force.
+     */
+    public void setCenterForceMultiplier(double k) {
+        this.centerForceMultiplier = k;
+    }
+
+    /**
+     *  Set the multiplier for repel force
+     */
+    public void setRepelForceMultiplier(double k) {
+        this.repelForceMultiplier = k;
+    }
+
+    /**
+     *  Set the multiplier for spring lengths
+     */
+    public void setSpringLengthMultiplier(double k) {
+        this.springLengthMultiplier = k;
+    }
+
+    /**
+     *  Set the multiplier for spring constants.
+     */
+    public void setSpringConstantMultiplier(double k) {
+        this.springConstantMultiplier = k;
     }
 
 }
