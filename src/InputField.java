@@ -46,18 +46,27 @@ public class InputField extends AbstractScreenObject {
         }
     }
 
+    /**
+     * Add a character to the input field.
+     */
     public void addCharacter(char c) {
         if (this.textWidth >= this.getWidth()) { return; }
         if ((int) c == 65535 || (int) c == 27) { return; }
         this.text = this.text + c;
     }
 
+    /**
+     * Delete the last character of the input field.
+     */
     public void deleteCharacter() {
         if (this.text.length() > 0) {
             this.text = this.text.substring(0, this.text.length()-1);
         }
     }
 
+    /**
+     * Get the text of the inputfield.
+     */
     public String getText() {
         return this.text;
     }
