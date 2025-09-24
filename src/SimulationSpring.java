@@ -5,8 +5,8 @@
  */
 public class SimulationSpring {
 
-    private final double restingLength;
-    private final double stiffness;
+    private double restingLength;
+    private double stiffness;
     private final SimulationNode simNode1;
     private final SimulationNode simNode2;
 
@@ -44,5 +44,19 @@ public class SimulationSpring {
      */
     public double desiredLength() {
         return this.restingLength;
+    }
+
+    /**
+     * Set the resting length of the spring.
+     */
+    public void setRestingLength(double restingLength) {
+        this.restingLength = restingLength;
+    }
+
+    /**
+     * Set the spring constant (stiffness) of the spring.
+     */
+    public void setStiffness(double stiffness) {
+        this.stiffness = stiffness;
     }
 }
