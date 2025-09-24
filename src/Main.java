@@ -16,7 +16,8 @@ public class Main {
         int screenWidth = gd.getDisplayMode().getWidth();
         int screenHeight = gd.getDisplayMode().getHeight();
 
-        Network network = new GridNetwork(30, 30);
+        // Network network = new GridNetwork(30, 30);
+        Network network = new TestNetwork(100);
         GraphSimulator graphsim = new GraphSimulator(network);
         Grapher graph = new Grapher(graphsim, width, height);
 
