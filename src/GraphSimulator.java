@@ -11,8 +11,6 @@ public class GraphSimulator {
     private SimulationSpring[] springs;
     private double centerForceMultiplier;
     private double repelForceMultiplier;
-    private double springLengthMultiplier;
-    private double springConstantMultiplier;
 
     public GraphSimulator(Network network) {
         // First create a SimulationNode for each Node.
@@ -28,8 +26,6 @@ public class GraphSimulator {
 
             this.centerForceMultiplier = 1;
             this.repelForceMultiplier = 1;
-            this.springLengthMultiplier = 1;
-            this.springConstantMultiplier = 1;
         }
 
         this.springs = new SimulationSpring[network.totalConnections()];
@@ -41,8 +37,8 @@ public class GraphSimulator {
         for (SimulationNode simNode : this.simNodes) {
             Node node = simNode.getNode();
 
-            double springLength = 0.2 * this.springLengthMultiplier;
-            double springConstant = 0.5 * this.springConstantMultiplier;
+            double springLength = 0.2;
+            double springConstant = 0.5;
 
             // Check the children
             List<Node> children = node.getChildren();
@@ -189,15 +185,19 @@ public class GraphSimulator {
     /**
      *  Set the multiplier for spring lengths
      */
-    public void setSpringLengthMultiplier(double k) {
-        this.springLengthMultiplier = k;
+    public void setSpringLength(double k) {
+        for (SimulationSpring spring : this.springs) {
+            spring.setRestingLength(k);
+        }
     }
 
     /**
      *  Set the multiplier for spring constants.
      */
-    public void setSpringConstantMultiplier(double k) {
-        this.springConstantMultiplier = k;
+    public void setSpringStiffness(double k) {
+        for (SimulationSpring spring : this.springs) {
+            spring.setStiffness(k);
+        }
     }
 
 }
