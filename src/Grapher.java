@@ -23,7 +23,8 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
     private double yOffset;
     private Vector mousePos;
     private SimulationNode draggingNode;
-    private InputField inputField;
+
+    private InputField[] inputFields;
 
     public Grapher(GraphSimulator graphSimulator, int width, int height) {
         this.graphSimulator = graphSimulator;
@@ -39,7 +40,15 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
         this.setBackground(Color.DARK_GRAY);
         this.setFocusable(true);
 
-        this.inputField = new InputField(50, 50, 200, 50);
+        this.inputFields = new InputField[4];
+        this.inputFields[0] = new InputField(50, 50, 200, 50);
+        this.inputFields[0].setMethod(k -> this.graphSimulator.setCenterForceMultiplier(k));
+        this.inputFields[1] = new InputField(50, 120, 200, 50);
+        this.inputFields[1].setMethod(k -> this.graphSimulator.setRepelForceMultiplier(k));
+        this.inputFields[2] = new InputField(50, 190, 200, 50);
+        this.inputFields[2].setMethod(k -> this.graphSimulator.setSpringStiffness(k));
+        this.inputFields[3] = new InputField(50, 260, 200, 50);
+        this.inputFields[3].setMethod(k -> this.graphSimulator.setSpringLength(k));
     }
 
     protected void drawLineWithWidth(Graphics g, int x1, int y1, int x2, int y2, int width) {
@@ -127,7 +136,9 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
             }
         }
 
-        this.inputField.render(g);
+        for (InputField inputField : this.inputFields) {
+            inputField.render(g);
+        }
     }
 
     /**
@@ -242,10 +253,13 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (this.inputField.isUnder(e.getX(), e.getY())) { 
-            this.inputField.isFocused(true); 
+        // Update forcus for input fields
+        for (InputField inputField : this.inputFields) {
+            inputField.isFocused(false);
+            if (inputField.isUnder(e.getX(), e.getY())) { 
+                inputField.isFocused(true); 
+            }
         }
-        else { this.inputField.isFocused(false); }
     }
 
     @Override
@@ -254,12 +268,9 @@ public class Grapher extends JPanel implements MouseWheelListener, MouseMotionLi
     public void mouseExited(MouseEvent e) {}
     @Override
     public void keyPressed(KeyEvent e) {
-        if (this.inputField.isFocused()) {
-            if ((int) e.getKeyChar() == 8) {
-                this.inputField.deleteCharacter();
-            }
-            else {
-                this.inputField.addCharacter(e.getKeyChar());
+        for (InputField inputField : this.inputFields) {
+            if (inputField.isFocused()) {
+                inputField.acceptInput(e.getKeyCode());
             }
         }
     }
