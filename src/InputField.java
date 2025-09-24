@@ -1,14 +1,16 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.util.function.Consumer;
 
 /**
  * The class InputField represents an input field that can be rendered.
  */
-public class InputField extends AbstractScreenObject {
+public class InputField extends AbstractScreenObject implements MethodCaller<Double> {
     
     private String text;
     private int textWidth;
+    private Consumer<Double> method;
 
     public InputField(int x, int y, int width, int height) {
         super(x, y, width, height);
@@ -28,11 +30,11 @@ public class InputField extends AbstractScreenObject {
 
         // Draw background
         g.setColor(Color.GRAY);
-        g.fillRect(this.getY(), this.getY(), this.getWidth(), textHeight);
+        g.fillRect(this.getX(), this.getY(), this.getWidth(), textHeight);
 
         // Draw text
         g.setColor(Color.PINK);
-        g.drawString(this.text, this.getX(), this.getX() + textAscent);
+        g.drawString(this.text, this.getX(), this.getY() + textAscent);
 
         // If focused, display cursor
         if (this.isFocused()) {
@@ -46,12 +48,20 @@ public class InputField extends AbstractScreenObject {
         }
     }
 
+    public void acceptInput(int keyCode) {
+        switch (keyCode) {
+            case 8  -> this.deleteCharacter();
+            case 10 -> this.call();
+            case 27 -> this.isFocused(false);
+            default -> this.addCharacter((char) keyCode);
+        }
+    }
+
     /**
      * Add a character to the input field.
      */
     public void addCharacter(char c) {
         if (this.textWidth >= this.getWidth()) { return; }
-        if ((int) c == 65535 || (int) c == 27) { return; }
         this.text = this.text + c;
     }
 
@@ -69,6 +79,22 @@ public class InputField extends AbstractScreenObject {
      */
     public String getText() {
         return this.text;
+    }
+
+    @Override
+    public void setMethod(Consumer<Double> method) {
+        this.method = method;
+    }
+
+    @Override
+    public void call() {
+        if (this.method != null) {
+            try {
+                this.method.accept(Double.valueOf(this.getText()));
+            } catch (Exception e) {
+                System.out.println("Invalid input");
+            }
+        }
     }
 
 }
