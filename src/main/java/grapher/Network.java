@@ -60,11 +60,11 @@ public class Network {
     }
 
     /**
-     * Check whether the given node is in the network.
+     * Check whether the given content is in the network.
      */
-    public boolean contains(Node node) {
+    public boolean contains(NodeContent content) {
         for (Node n : this.getNodes()) {
-            if (n.equals(node)) {
+            if (n.getContent().toString().equals(content)) {
                 return true;
             }
         }
