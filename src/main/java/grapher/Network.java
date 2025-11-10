@@ -58,4 +58,16 @@ public class Network {
     public List<Node> getNodes() {
         return this.nodes;
     }
+
+    /**
+     * Check whether the given node is in the network.
+     */
+    public boolean contains(Node node) {
+        for (Node n : this.getNodes()) {
+            if (n.equals(node)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
