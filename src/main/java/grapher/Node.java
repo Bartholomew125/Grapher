@@ -51,4 +51,13 @@ public class Node {
     public List<Node> getParents() {
         return this.parents;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Node other = (Node) obj;
+        if (this.getContent().toString().equals(other.getContent().toString())) {
+            return true;
+        }
+        return false;
+    }
 }
